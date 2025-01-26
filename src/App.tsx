@@ -63,15 +63,15 @@ function Countdown(props: {
   const b = breakdown(diff);
   return (
     <div>
-      <p className="countdown-relative">
-        <strong>{pluralize(b.days, "day")}, </strong>
+      <p className="countdown-relative">{pluralize(b.days, "day")}</p>
+      <p className="countdown-relative-sm">
         {pluralize(b.hours, "hour")}, {pluralize(b.minutes, "minute")},{" "}
         {pluralize(b.seconds, "second")}
       </p>
       {props.startDate ? (
         <progress className="countdown-progress" max={100} value={progress} />
       ) : null}
-      <p className="countdown-end">{props.endDate.toDateString()}</p>
+      <p className="countdown-end">({props.endDate.toDateString()})</p>
     </div>
   );
 }
