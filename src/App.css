@@ -1,14 +1,12 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-.countdown-progress {
-  display: block;
-  width: 100%;
-  height: 5em;
+.progress {
+  height: 2rem;
 }
 
 .countdown-relative {

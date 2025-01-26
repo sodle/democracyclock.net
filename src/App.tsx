@@ -69,7 +69,23 @@ function Countdown(props: {
         {pluralize(b.seconds, "second")}
       </p>
       {props.startDate ? (
-        <progress className="countdown-progress" max={100} value={progress} />
+        <>
+          <div
+            className="progress"
+            role="progressbar"
+            aria-label="Basic example"
+            aria-valuenow={progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <div
+              className="progress-bar"
+              style={{
+                width: `${progress}%`,
+              }}
+            ></div>
+          </div>
+        </>
       ) : null}
       <p className="countdown-end">({props.endDate.toDateString()})</p>
     </div>
