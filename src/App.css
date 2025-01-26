@@ -13,9 +13,14 @@
 
 .countdown-relative {
   font-size: 1.25em;
+  margin-top: 0;
   margin-bottom: 0;
 }
 
 .countdown-end {
   margin-top: 0;
+}
+
+h2 {
+  margin-bottom: 0;
 }
