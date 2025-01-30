@@ -10,6 +10,7 @@ function pluralize(value: number, unit: string) {
 }
 
 function Countdown(props: {
+  header: string;
   endDate: Date;
   countUp?: boolean;
   startDate?: Date;
@@ -36,6 +37,7 @@ function Countdown(props: {
   const [progress, setProgress] = useState(calcProgress());
 
   function breakdown(time: number): {
+    weeksIsh: number;
     days: number;
     hours: number;
     minutes: number;
@@ -43,6 +45,8 @@ function Countdown(props: {
   } {
     const days = Math.floor(time / 24 / 60 / 60);
     time -= days * 24 * 60 * 60;
+
+    const weeksIsh = Math.floor(days / 7);
 
     const hours = Math.floor(time / 60 / 60);
     time -= hours * 60 * 60;
@@ -52,7 +56,7 @@ function Countdown(props: {
 
     const seconds = time;
 
-    return { days, hours, minutes, seconds };
+    return { weeksIsh, days, hours, minutes, seconds };
   }
 
   useInterval(() => {
@@ -60,13 +64,40 @@ function Countdown(props: {
     setProgress(calcProgress());
   }, 500);
 
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   const b = breakdown(diff);
   return (
     <div>
-      <p className="countdown-relative">{pluralize(b.days, "day")}</p>
-      <p className="countdown-relative-sm">
-        {pluralize(b.hours, "hour")}, {pluralize(b.minutes, "minute")},{" "}
-        {pluralize(b.seconds, "second")}
+      <h2>
+        {props.header}{" "}
+        <span className="text-primary">{pluralize(b.weeksIsh, "week")}</span>.
+      </h2>
+      <p className="countdown-end">
+        {weekdays[props.endDate.getDay()]}, {months[props.endDate.getMonth()]}{" "}
+        {props.endDate.getDate()}, {props.endDate.getFullYear()}
       </p>
       {props.startDate ? (
         <>
@@ -79,7 +110,7 @@ function Countdown(props: {
             aria-valuemax={100}
           >
             <div
-              className="progress-bar"
+              className="progress-bar progress-bar-striped progress-bar-animated"
               style={{
                 width: `${progress}%`,
               }}
@@ -87,7 +118,10 @@ function Countdown(props: {
           </div>
         </>
       ) : null}
-      <p className="countdown-end">({props.endDate.toDateString()})</p>
+      <p className="countdown-remaining">
+        {pluralize(b.days, "day")}, {pluralize(b.hours, "hour")},{" "}
+        {pluralize(b.minutes, "minute")}, {pluralize(b.seconds, "second")}
+      </p>
     </div>
   );
 }
@@ -102,24 +136,37 @@ function App() {
   return (
     <>
       <h1>Countdown to the end of Trump 2</h1>
+      <hr />
       <div>
-        <h2>Trump's second term has lasted</h2>
-        <Countdown endDate={worstDate} countUp />
+        <Countdown
+          header="Trump's second term has lasted"
+          endDate={worstDate}
+          countUp
+        />
       </div>
       <hr />
       <div>
-        <h2>The 2026 Midterms are in</h2>
-        <Countdown endDate={midtermsDate} startDate={worstDate} />
+        <Countdown
+          header="The 2026 Midterms are in"
+          endDate={midtermsDate}
+          startDate={worstDate}
+        />
       </div>
       <hr />
       <div>
-        <h2>The 2028 Presidential Election is in</h2>
-        <Countdown endDate={electionDate} startDate={worstDate} />
+        <Countdown
+          header="The 2028 Presidential Election is in"
+          endDate={electionDate}
+          startDate={worstDate}
+        />
       </div>
       <hr />
       <div>
-        <h2>The next President will be inaugurated in</h2>
-        <Countdown endDate={inaugurationDate} startDate={worstDate} />
+        <Countdown
+          header="The next President will be inaugurated in"
+          endDate={inaugurationDate}
+          startDate={worstDate}
+        />
       </div>
       <hr />
       <p>

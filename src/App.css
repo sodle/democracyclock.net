@@ -9,24 +9,16 @@
   height: 2rem;
 }
 
-.countdown-relative {
-  font-size: 1.25em;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.countdown-relative-sm {
-  font-size: 1em;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 .countdown-end {
-  margin-top: 0;
-  font-weight: lighter;
+  font-weight: bolder;
+  margin: 0;
 }
 
-h2 {
-  margin-bottom: 0;
+.countdown-remaining {
+  font-weight: lighter;
+  margin: 0;
+}
+
+hr {
+  margin: 1rem 2rem;
 }
