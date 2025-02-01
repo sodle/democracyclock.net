@@ -96,12 +96,10 @@ function Countdown(props: {
   const b = breakdown(diff);
   return (
     <div className={`col-md-${props.width} border-bottom py-3`}>
-      <div className="headliner">
-        <h2 className="d-table-cell align-middle">
-          {props.header}{" "}
-          <span className="text-primary">{pluralize(b.weeksIsh, "week")}</span>.
-        </h2>
-      </div>
+      <h2>
+        {props.header}{" "}
+        <span className="text-primary">{pluralize(b.weeksIsh, "week")}</span>.
+      </h2>
       <p className="countdown-end">
         {weekdays[props.endDate.getDay()]}, {months[props.endDate.getMonth()]}{" "}
         {props.endDate.getDate()}, {props.endDate.getFullYear()}
