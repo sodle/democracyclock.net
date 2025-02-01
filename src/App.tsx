@@ -43,6 +43,10 @@ function Countdown(props: {
     minutes: number;
     seconds: number;
   } {
+    if (props.countUp) {
+      time++;
+    }
+
     const days = Math.floor(time / 24 / 60 / 60);
     time -= days * 24 * 60 * 60;
 
