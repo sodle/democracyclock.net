@@ -12,6 +12,7 @@ function pluralize(value: number, unit: string) {
 function Countdown(props: {
   header: string;
   endDate: Date;
+  width: number;
   countUp?: boolean;
   startDate?: Date;
 }) {
@@ -94,11 +95,13 @@ function Countdown(props: {
 
   const b = breakdown(diff);
   return (
-    <div>
-      <h2>
-        {props.header}{" "}
-        <span className="text-primary">{pluralize(b.weeksIsh, "week")}</span>.
-      </h2>
+    <div className={`col-md-${props.width} border-bottom py-3`}>
+      <div className="headliner">
+        <h2 className="d-table-cell align-middle">
+          {props.header}{" "}
+          <span className="text-primary">{pluralize(b.weeksIsh, "week")}</span>.
+        </h2>
+      </div>
       <p className="countdown-end">
         {weekdays[props.endDate.getDay()]}, {months[props.endDate.getMonth()]}{" "}
         {props.endDate.getDate()}, {props.endDate.getFullYear()}
@@ -140,39 +143,38 @@ function App() {
   return (
     <>
       <h1>Countdown to the end of Trump 2</h1>
-      <hr />
-      <div>
-        <Countdown
-          header="Trump's second term has lasted"
-          endDate={worstDate}
-          countUp
-        />
+      <div className="container-fluid">
+        <div className="row">
+          <Countdown
+            header="Trump's second term has lasted"
+            endDate={worstDate}
+            width={12}
+            countUp
+          />
+        </div>
+        <div className="row">
+          <Countdown
+            header="The 2026 Midterms are in"
+            endDate={midtermsDate}
+            startDate={worstDate}
+            width={12}
+          />
+        </div>
+        <div className="row">
+          <Countdown
+            header="The 2028 Presidential Election is in"
+            endDate={electionDate}
+            startDate={worstDate}
+            width={6}
+          />
+          <Countdown
+            header="The next President will be inaugurated in"
+            endDate={inaugurationDate}
+            startDate={worstDate}
+            width={6}
+          />
+        </div>
       </div>
-      <hr />
-      <div>
-        <Countdown
-          header="The 2026 Midterms are in"
-          endDate={midtermsDate}
-          startDate={worstDate}
-        />
-      </div>
-      <hr />
-      <div>
-        <Countdown
-          header="The 2028 Presidential Election is in"
-          endDate={electionDate}
-          startDate={worstDate}
-        />
-      </div>
-      <hr />
-      <div>
-        <Countdown
-          header="The next President will be inaugurated in"
-          endDate={inaugurationDate}
-          startDate={worstDate}
-        />
-      </div>
-      <hr />
       <p>
         <a href="https://github.com/sodle/democracyclock.net" target="_blank">
           Source Code
