@@ -1,12 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { useInterval } from "usehooks-ts";
 
-function pluralize(value: number, unit: string) {
+type StonkPrice = {
+  Amount: number;
+};
+
+type StonkQuote = {
+  PricingDate: string;
+  Close: StonkPrice;
+};
+
+type StonkResponse = {
+  startingQuote: StonkQuote;
+  latestQuote: StonkQuote;
+};
+
+const emptyQuote: StonkQuote = {
+  PricingDate: "",
+  Close: {
+    Amount: 0,
+  },
+};
+
+function pluralize(value: number, unit: string): string {
   if (value == 1) {
     return `${value} ${unit}`;
   }
   return `${value.toLocaleString()} ${unit}s`;
+}
+
+function useStonks(): [StonkQuote, StonkQuote] {
+  const [startingQuote, setStartingQuote] = useState<StonkQuote>(emptyQuote);
+  const [latestQuote, setLatestQuote] = useState<StonkQuote>(emptyQuote);
+
+  useEffect(() => {
+    fetch("/api/stonks.json")
+      .then((r) => r.json())
+      .then((r: StonkResponse) => {
+        setStartingQuote(r.startingQuote);
+        setLatestQuote(r.latestQuote);
+      });
+  }, []);
+
+  useInterval(() => {
+    fetch("/api/stonks.json")
+      .then((r) => r.json())
+      .then((r: StonkResponse) => {
+        setStartingQuote(r.startingQuote);
+        setLatestQuote(r.latestQuote);
+      });
+  }, 30 * 60 * 1000);
+
+  return [startingQuote, latestQuote];
+}
+
+function StonkMeter() {
+  const [startingQuote, latestQuote] = useStonks();
+
+  const diff = latestQuote.Close.Amount - startingQuote.Close.Amount;
+  const percentage = Math.abs(diff / startingQuote.Close.Amount) * 100;
+  const percentStr = `${percentage.toFixed(2)}%`;
+
+  return (
+    <div className="col-md-12 border-bottom py-3">
+      <h2>
+        The S&P 500 has{" "}
+        {diff < 0 ? (
+          <span style={{ color: "red" }}>fallen {percentStr}</span>
+        ) : (
+          <span style={{ color: "green" }}>risen {percentStr}</span>
+        )}{" "}
+        since Inauguration Day 2025.
+      </h2>
+    </div>
+  );
 }
 
 function Countdown(props: {
@@ -149,6 +217,9 @@ function App() {
             width={12}
             countUp
           />
+        </div>
+        <div className="row">
+          <StonkMeter />
         </div>
         <div className="row">
           <Countdown
