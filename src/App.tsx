@@ -16,13 +16,6 @@ type StonkResponse = {
   latestQuote: StonkQuote;
 };
 
-const emptyQuote: StonkQuote = {
-  PricingDate: "",
-  Close: {
-    Amount: 0,
-  },
-};
-
 function pluralize(value: number, unit: string): string {
   if (value == 1) {
     return `${value} ${unit}`;
@@ -30,9 +23,9 @@ function pluralize(value: number, unit: string): string {
   return `${value.toLocaleString()} ${unit}s`;
 }
 
-function useStonks(): [StonkQuote, StonkQuote] {
-  const [startingQuote, setStartingQuote] = useState<StonkQuote>(emptyQuote);
-  const [latestQuote, setLatestQuote] = useState<StonkQuote>(emptyQuote);
+function useStonks(): [StonkQuote?, StonkQuote?] {
+  const [startingQuote, setStartingQuote] = useState<StonkQuote | undefined>();
+  const [latestQuote, setLatestQuote] = useState<StonkQuote | undefined>();
 
   useEffect(() => {
     fetch("/api/stonks.json")
@@ -57,6 +50,13 @@ function useStonks(): [StonkQuote, StonkQuote] {
 
 function StonkMeter() {
   const [startingQuote, latestQuote] = useStonks();
+
+  if (!(latestQuote && startingQuote)) {
+    console.log("empty");
+    return <h2>Loading stonks...</h2>;
+  }
+
+  console.log("loaded");
 
   const diff = latestQuote.Close.Amount - startingQuote.Close.Amount;
   const percentage = Math.abs(diff / startingQuote.Close.Amount) * 100;
