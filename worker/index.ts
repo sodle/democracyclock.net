@@ -13,13 +13,17 @@ type Quote = {
 
 const lastQuoteDate = "2025-01-17";
 
+export interface Env {
+  FOOL_API_KEY: string;
+}
+
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/stonks.json") {
       const response = await fetch(
-        "https://api.fool.com/quotes/v4/historical/charts/220472?timeFrame=YTD&precision=Day&apikey=6cbf5f34-ba40-4108-a1ab-d951c608955e"
+        `https://api.fool.com/quotes/v4/historical/charts/220472?timeFrame=YTD&precision=Day&apikey=${env.FOOL_API_KEY}`
       );
       const responseJson: FoolResponse = await response.json();
       const chartBars = responseJson.ChartBars;
