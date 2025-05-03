@@ -64,7 +64,7 @@ export default {
       const latestQuote = chartBars[chartBars.length - 1];
 
       await env.DB.prepare(
-        "INSERT INTO StonkQuotes (timestamp, sp500) VALUE (?, ?)"
+        "INSERT INTO StonkQuotes (timestamp, sp500) VALUES (?, ?)"
       )
         .bind(now.getTime(), latestQuote.Close.Amount)
         .run();
@@ -96,7 +96,7 @@ export default {
       const usdLatest = 1 / responseJson.rates.USD;
 
       await env.DB.prepare(
-        "INSERT INTO CurrencyQuotes (timestamp, usd) VALUE (?, ?)"
+        "INSERT INTO CurrencyQuotes (timestamp, usd) VALUES (?, ?)"
       )
         .bind(now.getTime(), responseJson.rates.USD)
         .run();
