@@ -16,6 +16,11 @@ type StonkResponse = {
   latestQuote: StonkQuote;
 };
 
+type DollarResponse = {
+  usdStart: number;
+  usdLatest: number;
+};
+
 function pluralize(value: number, unit: string): string {
   if (value == 1) {
     return `${value} ${unit}`;
@@ -48,6 +53,31 @@ function useStonks(): [StonkQuote?, StonkQuote?] {
   return [startingQuote, latestQuote];
 }
 
+function useDollar(): [number?, number?] {
+  const [usdStart, setUsdStart] = useState<number | undefined>();
+  const [usdLatest, setUsdLatest] = useState<number | undefined>();
+
+  useEffect(() => {
+    fetch("/api/dollar.json")
+      .then((r) => r.json())
+      .then((r: DollarResponse) => {
+        setUsdStart(r.usdStart);
+        setUsdLatest(r.usdLatest);
+      });
+  }, []);
+
+  useInterval(() => {
+    fetch("/api/dollar.json")
+      .then((r) => r.json())
+      .then((r: DollarResponse) => {
+        setUsdStart(r.usdStart);
+        setUsdLatest(r.usdLatest);
+      });
+  }, 30 * 60 * 1000);
+
+  return [usdStart, usdLatest];
+}
+
 function StonkMeter() {
   const [startingQuote, latestQuote] = useStonks();
 
@@ -63,7 +93,7 @@ function StonkMeter() {
   const percentStr = `${percentage.toFixed(2)}%`;
 
   return (
-    <div className="col-md-12 border-bottom py-3">
+    <div className="col-md-6 border-bottom py-3">
       <h2>
         The S&P 500 has{" "}
         {diff < 0 ? (
@@ -72,6 +102,35 @@ function StonkMeter() {
           <span style={{ color: "green" }}>risen {percentStr}</span>
         )}{" "}
         since Inauguration Day 2025.
+      </h2>
+    </div>
+  );
+}
+
+function DollarMeter() {
+  const [startingQuote, latestQuote] = useDollar();
+
+  if (!(latestQuote && startingQuote)) {
+    console.log("empty");
+    return <h2>Loading stonks...</h2>;
+  }
+
+  console.log("loaded");
+
+  const diff = latestQuote - startingQuote;
+  const percentage = Math.abs(diff / startingQuote) * 100;
+  const percentStr = `${percentage.toFixed(2)}%`;
+
+  return (
+    <div className="col-md-6 border-bottom py-3">
+      <h2>
+        The US Dollar has{" "}
+        {diff < 0 ? (
+          <span style={{ color: "red" }}>fallen {percentStr}</span>
+        ) : (
+          <span style={{ color: "green" }}>risen {percentStr}</span>
+        )}{" "}
+        compared to the Euro.
       </h2>
     </div>
   );
@@ -220,6 +279,7 @@ function App() {
         </div>
         <div className="row">
           <StonkMeter />
+          <DollarMeter />
         </div>
         <div className="row">
           <Countdown
