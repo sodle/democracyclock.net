@@ -84,7 +84,7 @@ export default {
         const age = now.getTime() - timestamp;
 
         if (age < 18 * 60 * 60 * 1000) {
-          const usdLatest = result["usd"] as number;
+          const usdLatest = result["usdToEur"] as number;
           return Response.json({ usdStart, usdLatest });
         }
       }
