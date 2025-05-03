@@ -98,7 +98,7 @@ export default {
       await env.DB.prepare(
         "INSERT INTO CurrencyQuotes (timestamp, usd) VALUES (?, ?)"
       )
-        .bind(now.getTime(), responseJson.rates.USD)
+        .bind(now.getTime(), usdLatest)
         .run();
 
       return Response.json({ usdStart, usdLatest });
