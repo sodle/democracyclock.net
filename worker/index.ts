@@ -96,7 +96,7 @@ export default {
       const usdLatest = 1 / responseJson.rates.USD;
 
       await env.DB.prepare(
-        "INSERT INTO CurrencyQuotes (timestamp, usd) VALUES (?, ?)"
+        "INSERT INTO CurrencyQuotes (timestamp, usdToEur) VALUES (?, ?)"
       )
         .bind(now.getTime(), usdLatest)
         .run();
