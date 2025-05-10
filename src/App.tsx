@@ -61,7 +61,7 @@ function useDollar(): [number?, number?, string?] {
 
   function formatDate(timestamp: number): string {
     const date = new Date(timestamp);
-    return `${date.getFullYear}-${date.getMonth() + 1}-${date.getDate()}`;
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 
   useEffect(() => {
