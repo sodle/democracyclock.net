@@ -112,7 +112,9 @@ function StonkMeter() {
         )}{" "}
         since Inauguration Day 2025.
       </h2>
-      <p className="countdown-end">Last updated {latestQuote.PricingDate}</p>
+      <p className="countdown-remaining">
+        Last updated {latestQuote.PricingDate}
+      </p>
     </div>
   );
 }
@@ -142,7 +144,7 @@ function DollarMeter() {
         )}{" "}
         compared to the Euro.
       </h2>
-      <p className="countdown-end">Last updated {lastUpdated}</p>
+      <p className="countdown-remaining">Last updated {lastUpdated}</p>
     </div>
   );
 }
