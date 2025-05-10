@@ -85,7 +85,7 @@ export default {
 
         if (age < 18 * 60 * 60 * 1000) {
           const usdLatest = result["usdToEur"] as number;
-          return Response.json({ usdStart, usdLatest });
+          return Response.json({ usdStart, usdLatest, timestamp });
         }
       }
 
@@ -101,7 +101,7 @@ export default {
         .bind(now.getTime(), usdLatest)
         .run();
 
-      return Response.json({ usdStart, usdLatest });
+      return Response.json({ usdStart, usdLatest, timestamp: now.getTime() });
     }
     if (url.pathname.startsWith("/api/")) {
       return Response.json({

@@ -19,6 +19,7 @@ type StonkResponse = {
 type DollarResponse = {
   usdStart: number;
   usdLatest: number;
+  timestamp: number;
 };
 
 function pluralize(value: number, unit: string): string {
@@ -53,9 +54,15 @@ function useStonks(): [StonkQuote?, StonkQuote?] {
   return [startingQuote, latestQuote];
 }
 
-function useDollar(): [number?, number?] {
+function useDollar(): [number?, number?, string?] {
   const [usdStart, setUsdStart] = useState<number | undefined>();
   const [usdLatest, setUsdLatest] = useState<number | undefined>();
+  const [lastUpdated, setLastUpdated] = useState<string | undefined>();
+
+  function formatDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    return `${date.getFullYear}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
 
   useEffect(() => {
     fetch("/api/dollar.json")
@@ -63,6 +70,7 @@ function useDollar(): [number?, number?] {
       .then((r: DollarResponse) => {
         setUsdStart(r.usdStart);
         setUsdLatest(r.usdLatest);
+        setLastUpdated(formatDate(r.timestamp));
       });
   }, []);
 
@@ -72,10 +80,11 @@ function useDollar(): [number?, number?] {
       .then((r: DollarResponse) => {
         setUsdStart(r.usdStart);
         setUsdLatest(r.usdLatest);
+        setLastUpdated(formatDate(r.timestamp));
       });
   }, 30 * 60 * 1000);
 
-  return [usdStart, usdLatest];
+  return [usdStart, usdLatest, lastUpdated];
 }
 
 function StonkMeter() {
@@ -103,12 +112,13 @@ function StonkMeter() {
         )}{" "}
         since Inauguration Day 2025.
       </h2>
+      <p className="countdown-end">Last updated {latestQuote.PricingDate}</p>
     </div>
   );
 }
 
 function DollarMeter() {
-  const [startingQuote, latestQuote] = useDollar();
+  const [startingQuote, latestQuote, lastUpdated] = useDollar();
 
   if (!(latestQuote && startingQuote)) {
     console.log("empty");
@@ -132,6 +142,7 @@ function DollarMeter() {
         )}{" "}
         compared to the Euro.
       </h2>
+      <p className="countdown-end">Last updated {lastUpdated}</p>
     </div>
   );
 }
