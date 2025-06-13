@@ -282,6 +282,17 @@ function App() {
     <>
       <h1>Countdown to the end of Trump 2</h1>
       <div className="container-fluid">
+        <div className="alert alert-warning" role="alert">
+          <p className="fs-1">
+            <strong>On Saturday, June 14</strong>, give Donald Trump a birthday
+            he'll never forget.
+          </p>
+          <p className="fs-2">
+            <a href="https://www.nokings.org/" target="_blank">
+              Find a NO KINGS protest near you
+            </a>
+          </p>
+        </div>
         <div className="row">
           <Countdown
             header="Trump's second term has lasted"
