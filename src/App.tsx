@@ -280,25 +280,8 @@ const inaugurationDate = new Date("2029-01-20T09:00:00-05:00");
 function App() {
   return (
     <>
-      <div className="alert alert-danger" role="alert">
-        <p className="fs-1">
-          Tell your leaders, <strong>NO WAR WITH IRAN.</strong>
-        </p>
-        <p className="fs-5">Hi. I'm Scott. I'm 31 years old.</p>
-        <p className="fs-5">One of my earliest memories is of September 11, 2001, of my mom walking my sister and I to the bus stop in the morning, and trying to explain to us what had just happened in New York.</p>
-        <p className="fs-5">Since then, I've watched as we fought two pointless wars in Afghanistan and Iraq. A pandemic. A global financial crisis, and another, and another.</p>
-        <p className="fs-5">Over the past two years, I've watched my own country, under both Democratic and Republican leadership, help perpetuate a genocide in the Gaza Strip.</p>
-        <p className="fs-5">And as I sit here typing this on June 21, 2025, I see history repeating itself, only there is no denying that America and Israel are the aggressors this time.</p>
-        <p className="fs-5">I feel tired and hopeless. I feel like I live in a country that is incapable of ever learning any fucking lesson.</p>
-        <p className="fs-5">Fuck this war. Fuck Benjamin Netanyahu. Fuck Donald Trump.</p>
-        <p className="fs-5">And since I'm all out of words, I'll leave it to my favorite band <a href="https://www.youtube.com/watch?v=71IkCdqdNig" target="_blank">The Airborne Toxic Event</a> to play me off.</p>
-        <p className="fs-2">Be safe. Be kind. Call your Congressperson.</p>
-        <p className="fs-2">
-          <a href="https://5calls.org/issue/iran-israel-war-us-involvement/" target="_blank">
-            5calls.org
-          </a> for instructions
-        </p>
-      </div>
+      {/* <div className="alert alert-danger" role="alert">
+      </div> */}
       <h1>Countdown to the end of Trump 2</h1>
       <div className="container-fluid">
         <div className="row">
