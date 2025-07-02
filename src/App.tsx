@@ -259,7 +259,7 @@ function Countdown(props: {
               style={{
                 width: `${progress}%`,
               }}
-            ></div>
+            >{Math.floor(progress)}%</div>
           </div>
         </>
       ) : null}
