@@ -2,20 +2,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { useInterval } from "usehooks-ts";
 
-type StonkPrice = {
-  Amount: number;
-};
-
-type StonkQuote = {
-  PricingDate: string;
-  Close: StonkPrice;
-};
-
-type StonkResponse = {
-  startingQuote: StonkQuote;
-  latestQuote: StonkQuote;
-};
-
 type DollarResponse = {
   usdStart: number;
   usdLatest: number;
@@ -27,31 +13,6 @@ function pluralize(value: number, unit: string): string {
     return `${value} ${unit}`;
   }
   return `${value.toLocaleString()} ${unit}s`;
-}
-
-function useStonks(): [StonkQuote?, StonkQuote?] {
-  const [startingQuote, setStartingQuote] = useState<StonkQuote | undefined>();
-  const [latestQuote, setLatestQuote] = useState<StonkQuote | undefined>();
-
-  useEffect(() => {
-    fetch("/api/stonks.json")
-      .then((r) => r.json())
-      .then((r: StonkResponse) => {
-        setStartingQuote(r.startingQuote);
-        setLatestQuote(r.latestQuote);
-      });
-  }, []);
-
-  useInterval(() => {
-    fetch("/api/stonks.json")
-      .then((r) => r.json())
-      .then((r: StonkResponse) => {
-        setStartingQuote(r.startingQuote);
-        setLatestQuote(r.latestQuote);
-      });
-  }, 30 * 60 * 1000);
-
-  return [startingQuote, latestQuote];
 }
 
 function useDollar(): [number?, number?, string?] {
@@ -87,44 +48,12 @@ function useDollar(): [number?, number?, string?] {
   return [usdStart, usdLatest, lastUpdated];
 }
 
-function StonkMeter() {
-  const [startingQuote, latestQuote] = useStonks();
-
-  if (!(latestQuote && startingQuote)) {
-    console.log("empty");
-    return <h2>Loading stonks...</h2>;
-  }
-
-  console.log("loaded");
-
-  const diff = latestQuote.Close.Amount - startingQuote.Close.Amount;
-  const percentage = Math.abs(diff / startingQuote.Close.Amount) * 100;
-  const percentStr = `${percentage.toFixed(2)}%`;
-
-  return (
-    <div className="col-md-6 border-bottom py-3">
-      <h2>
-        The S&P 500 has{" "}
-        {diff < 0 ? (
-          <span style={{ color: "red" }}>fallen {percentStr}</span>
-        ) : (
-          <span style={{ color: "green" }}>risen {percentStr}</span>
-        )}{" "}
-        since Inauguration Day 2025.
-      </h2>
-      <p className="countdown-remaining">
-        Last updated {latestQuote.PricingDate}
-      </p>
-    </div>
-  );
-}
-
 function DollarMeter() {
   const [startingQuote, latestQuote, lastUpdated] = useDollar();
 
   if (!(latestQuote && startingQuote)) {
     console.log("empty");
-    return <h2>Loading stonks...</h2>;
+    return <h2>Loading...</h2>;
   }
 
   console.log("loaded");
@@ -293,7 +222,6 @@ function App() {
           />
         </div>
         <div className="row">
-          <StonkMeter />
           <DollarMeter />
         </div>
         <div className="row">
