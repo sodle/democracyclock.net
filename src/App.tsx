@@ -63,7 +63,7 @@ function DollarMeter() {
   const percentStr = `${percentage.toFixed(2)}%`;
 
   return (
-    <div className="col-md-6 border-bottom py-3">
+    <div className="col-md-12 border-bottom py-3">
       <h2>
         The US Dollar has{" "}
         {diff < 0 ? (
